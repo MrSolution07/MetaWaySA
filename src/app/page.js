@@ -7,6 +7,8 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Label } from "@/components/ui/label"
 import { Menu, X } from 'lucide-react';
 import './styles.css';
+import emailjs from '@emailjs/browser';
+
 
 export default function OnePage() {
   const [subject, setSubject] = useState('general')
@@ -15,6 +17,29 @@ export default function OnePage() {
   const aboutRef = useRef(null)
   const teamRef = useRef(null)
   const contactRef = useRef(null)
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm('service_yehrrri', 'template_dddpkfq', form.current, {
+        publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+          window.alert('Message sent successfuly!')
+          form.current.reset();
+          
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+          window.alert('Failed to send the nessage')
+        },
+      );
+  };
+
 
   const teamMembers = [
     { name: ' Christian Bulabula', 
@@ -27,15 +52,19 @@ export default function OnePage() {
       imageSource : 'https://media.licdn.com/dms/image/v2/D4D03AQGbRyVIr1qdqA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1714336993396?e=1734566400&v=beta&t=bHosSnBcMF1vV9ipCVfudbvN0II_qPlqTBsSe7kVXpo',
       profile:'https://www.linkedin.com/in/mike-katutwa-a77b66279/' 
     },
-    { name: 'Lesedi ', role:
-      'Fronted Developer', 
-      imageSource: '',
-      profile: ''
+    { name: 'Lesedi Ntamane', 
+      role:'UI/UX Designer', 
+      imageSource: 'https://media.licdn.com/dms/image/v2/D4D03AQFP_s9g-AR4NQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1719003697256?e=1734566400&v=beta&t=Y4F-AVAp-h1IxDS8JBR8t7UvIRuxcxHSjhywwZMmJ6g',
+      profile: 'https://www.linkedin.com/in/lesedi-naledi-ntamane-47b3bb301/'
     },
-    { name: 'Govenor', role: 'Fronted Developer' },
-    { name: 'Mabuda', role: 'Technical Writer', 
+    { name: 'Govenor Khoza',
+      role: 'Fronted Developer',
+      imageSource: '',
+      profile : 'https://www.linkedin.com/in/govenor-khoza-7313a9215/?original_referer=&originalSubdomain=za'
+    },
+    { name: 'Anonga Mabuda', role: 'Technical Writer', 
       imageSource: 'https://media.licdn.com/dms/image/v2/D4D03AQErBquvjESo_w/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1714773917295?e=1734566400&v=beta&t=frVSFkGqgZc7uSJiZrbjiE6L1CSHahrZMtC-yhM3q04',
-      profile: ''
+      profile: 'https://www.linkedin.com/in/anonga-mabuda-68298a26b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app'
     },
   ]
 
@@ -75,7 +104,7 @@ export default function OnePage() {
       <section id="home" ref={homeRef} className="bg-black py-20">
         <div className="container mx-auto text-center px-4">
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-4 text-white">Welcome to Our Website</h1>
-          <p className="text-lg md:text-xl lg:text-2xl mb-8 text-white">Discover amazing features and services</p>
+          <p className="text-lg md:text-xl lg:text-2xl mb-8 text-white">Empowering South Africans with NFT investment opportunities and expert knowledge</p>
           <Button onClick={() => scrollToSection(contactRef)} className="bgColor text-white hover:bg-gray-200">Talk to us</Button>
         </div>
       </section>
@@ -86,12 +115,13 @@ export default function OnePage() {
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 text-black">About Us</h2>
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-base md:text-lg mb-6 text-black">
-              We are a dedicated team of professionals committed to delivering innovative solutions to our clients. 
-              With years of experience in the industry, we strive to exceed expectations and create lasting partnerships.
+              We are a passionate team focused on helping South Africans invest in NFTs and understand the technology behind it.
+              With years of experience, we aim to educate and empower individuals to navigate the world of digital assets confidently, 
+              turning opportunities into success.
             </p>
             <p className="text-base md:text-lg text-black">
-              Our mission is to empower businesses with cutting-edge technology and unparalleled support, 
-              helping them thrive in the digital age.
+              Our mission is to provide innovative solutions and expert guidance,
+              enabling our clients to make informed decisions and grow their investments in the evolving NFT space.
             </p>
           </div>
         </div>
@@ -126,32 +156,33 @@ export default function OnePage() {
       <section id="contact" ref={contactRef} className="py-20 bg-white">
         <div className="container mx-auto max-w-2xl px-4">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-12 text-black">Contact Us</h2>
-          <form className="space-y-6">
+          <form ref={form} onSubmit={sendEmail} className="space-y-6">
             <div>
-              <Label htmlFor="name" className="text-black">Name</Label>
-              <Input id="name" placeholder="Your name" className="bg-white text-black border-gray-300" />
+              <Label htmlFor="name"  className="text-black">Name</Label>
+              <Input id="name" name="fName"placeholder="Your name" className="bg-white text-black border-gray-300" />
             </div>
             <div>
               <Label htmlFor="email" className="text-black">Email</Label>
-              <Input id="email" type="email" placeholder="Your email" className="bg-white text-black border-gray-300" />
+              <Input id="email" name="email" type="email" placeholder="Your email" className="bg-white text-black border-gray-300" />
             </div>
             <div>
-              <Label htmlFor="subject" className="text-black">Subject</Label>
-              <Select onValueChange={setSubject} defaultValue={subject}>
+              <Label className="text-black">Subject</Label>
+              <Select onValueChange={setSubject} name="subject" defaultValue={subject}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select a subject" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="general">General Inquiry</SelectItem>
-                  <SelectItem value="delete-account">Request Account Deletion</SelectItem>
-                  <SelectItem value="verify-account">Request Account Verification</SelectItem>
-                  <SelectItem value="support">Technical Support</SelectItem>
+                <SelectContent name="subject">
+                  <SelectItem name="subject" value="general">General Inquiry</SelectItem>
+                  <SelectItem name="subject" value="delete-account">Request Account Deletion</SelectItem>
+                  <SelectItem name="subject" value="verify-account">Request Account Verification</SelectItem>
+                  <SelectItem name="subject" value="support">Technical Support</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label htmlFor="message" className="text-black">Message</Label>
+              <Label className="text-black">Message</Label>
               <Textarea 
+                name="message"
                 id="message" 
                 placeholder="Your message" 
                 rows={4}
