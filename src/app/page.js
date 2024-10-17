@@ -21,22 +21,32 @@ export default function OnePage() {
 
   const sendEmail = (e) => {
     e.preventDefault();
-
+  
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+  
+    if (!publicKey) {
+      console.error('Public key is not defined');
+      window.alert('Public key for EmailJS is missing');
+      return;
+    }
+  
     emailjs
-      .sendForm('service_yehrrri', 'template_dddpkfq', form.current, {
-        publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-      })
+      .sendForm(
+        'service_yehrrri',    
+        'template_dddpkfq',    
+        form.current,          
+        publicKey              
+      )
       .then(
         () => {
           console.log('SUCCESS!');
-          window.alert('Message sent successfuly!')
+          window.alert('Message sent successfully!');
           form.current.reset();
-          
         },
         (error) => {
           console.log('FAILED...', error.text);
-          window.alert('Failed to send the nessage')
-        },
+          window.alert('Failed to send the message');
+        }
       );
   };
 
