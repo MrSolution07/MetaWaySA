@@ -69,7 +69,7 @@ export default function OnePage() {
     },
     { name: 'Govenor Khoza',
       role: 'Fronted Developer',
-      imageSource: '',
+      imageSource: 'https://media.licdn.com/dms/image/v2/D4D03AQFuDBFDNmFAEg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1729191628528?e=1735171200&v=beta&t=oINeZvJcLeLMpuUlDwF70ndVocVL3Br9nQKHHIaGf8k',
       profile : 'https://www.linkedin.com/in/govenor-khoza-7313a9215/?original_referer=&originalSubdomain=za'
     },
     { name: 'Anonga Mabuda', role: 'Technical Writer', 
